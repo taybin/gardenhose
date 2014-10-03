@@ -1,4 +1,4 @@
-defmodule Repo do
+defmodule Gardenhose.Repo do
   use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env
 
   @doc "Adapter configuration"

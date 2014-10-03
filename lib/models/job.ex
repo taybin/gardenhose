@@ -3,7 +3,6 @@ defmodule Gardenhose.Model.Job do
 
   schema "jobs" do
     field :name, :string
-    field :script, :string
   end
 
   validate job,
