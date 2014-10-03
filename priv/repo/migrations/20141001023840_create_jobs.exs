@@ -1,4 +1,4 @@
-defmodule Repo.Migrations.CreateJobs do
+defmodule Gardenhose.Repo.Migrations.CreateJobs do
   use Ecto.Migration
 
   def up do
