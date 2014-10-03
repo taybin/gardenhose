@@ -1,10 +1,10 @@
 defmodule Gardenhose.Model.Group do
-  alias Gardenhose.Model, as: Model
+  alias Gardenhose.Model.Job, as: Job
   use Ecto.Model
 
   schema "groups" do
     field :name, :string
-    has_one :job, Model.Job
+    has_one :job, Job
   end
 
   validate group,
