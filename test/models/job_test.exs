@@ -1,8 +1,8 @@
-defmodule Gardenhose.JobTest do
+defmodule Gardenhose.Model.JobTest do
   alias Gardenhose.Model.Job, as: Job
   alias Gardenhose.Model.JobToJob, as: JobToJob
   alias Gardenhose.Repo, as: Repo
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "can save job to database" do
     job = %Job{name: "test"}

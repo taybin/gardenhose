@@ -1,7 +1,7 @@
-defmodule Gardenhose.GroupTest do
+defmodule Gardenhose.Model.GroupTest do
   alias Gardenhose.Model.Group, as: Group
   alias Gardenhose.Repo, as: Repo
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "can save group to database" do
     group = %Group{name: "test"}
