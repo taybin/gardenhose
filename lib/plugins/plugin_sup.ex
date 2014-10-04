@@ -1,11 +1,12 @@
 defmodule Gardenhose.Plugin.Supervisor do
   use Supervisor
 
-  def start_link do
-    Supervisor.start_link(__MODULE__, [])
-  end
-
   @registry_name Gardenhose.Plugin.Registry
+  @plugin_sup_name Gardenhose.Plugin.Supervisor
+
+  def start_link do
+    Supervisor.start_link(__MODULE__, [], name: @plugin_sup_name)
+  end
 
   def init([]) do
     children = [
@@ -15,7 +16,8 @@ defmodule Gardenhose.Plugin.Supervisor do
   end
 
   def add_plugin_sup(sup) do
-    Supervisor.start_child(__MODULE__, sup)
+    spec = supervisor(sup, [])
+    Supervisor.start_child(@plugin_sup_name, spec)
   end
 
 end
