@@ -5,19 +5,23 @@ defmodule Gardenhose.Plugin.Script do
   ##
   # External
   #
-  def start_link(stateFn) do
-    GenServer.start_link(__MODULE__, stateFn)
+  def add_plugin(name, stateFn) do
+    Gardenhose.Plugin.Script.Supervisor.add_plugin(name, stateFn)
   end
 
-  def start(pid) do
-    GenServer.cast(pid, {:start, :os.getpid()})
+  def start_link(name, stateFn) do
+    GenServer.start_link(__MODULE__, [stateFn], [name: name])
+  end
+
+  def start(name) do
+    GenServer.cast(name, {:start, :os.getpid()})
   end
 
   ##
   # Internal
   #
 
-  def init(stateFn) do
+  def init([stateFn]) do
     {:ok, stateFn.()}
   end
 
