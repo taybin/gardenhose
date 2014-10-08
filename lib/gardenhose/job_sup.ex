@@ -1,8 +1,12 @@
 defmodule Gardenhose.Job.Supervisor do
   use Supervisor
 
+  def create_job(args) do
+    Supervisor.start_child(:job_sup, [args])
+  end
+
   def start_link() do
-    Supervisor.start_link(__MODULE__, [])
+    Supervisor.start_link(__MODULE__, [], name: :job_sup)
   end
 
   def init([]) do

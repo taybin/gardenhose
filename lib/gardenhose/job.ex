@@ -1,8 +1,13 @@
 defmodule Gardenhose.Job do
   use GenServer
+  require Logger
+
+  def create_job(args) do
+    Gardenhose.Job.Supervisor.create_job(args)
+  end
 
   def start_link(args) do
-    GenServer.start(__MODULE__, args)
+    GenServer.start_link(__MODULE__, args)
   end
 
   def start(pid, caller) do
@@ -10,10 +15,12 @@ defmodule Gardenhose.Job do
   end
 
   def init(args) do
+    Logger.info("init'd")
     {:ok, args}
   end
 
   def handle_cast({:start, caller}, state) do
+    Logger.info("started")
     {:noreply, state}
   end
 end
