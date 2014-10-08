@@ -9,8 +9,8 @@ defmodule Gardenhose do
     children = [
       # Define workers and child supervisors to be supervised
       worker(Gardenhose.Repo, []),
-      supervisor(Gardenhose.Job.Supervisor, []),
       worker(Gardenhose.Job.Stream, []),
+      supervisor(Gardenhose.Job.Supervisor, []),
       worker(Gardenhose.Job.Master.Controller, [])
     ]
 

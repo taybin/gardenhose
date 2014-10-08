@@ -21,9 +21,9 @@ defmodule Gardenhose.Job do
 
   def handle_cast({:start, caller}, state) do
     Logger.info("started")
-    Gardenhose.Job.Stream.notify_start
-    state.fn()
-    Gardenhose.Job.Stream.notify_stop
-    {:stop, :finished, state}
+    Gardenhose.Job.Stream.notify_start(:a)
+    state.()
+    Gardenhose.Job.Stream.notify_stop(:b)
+    {:stop, :normal, state}
   end
 end
