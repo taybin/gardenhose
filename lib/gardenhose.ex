@@ -8,7 +8,9 @@ defmodule Gardenhose do
 
     children = [
       # Define workers and child supervisors to be supervised
-      worker(Gardenhose.Repo, [])
+      worker(Gardenhose.Repo, []),
+      supervisor(Gardenhose.Job.Supervisor, []),
+      worker(Gardenhose.Job.Stream, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
