@@ -2,30 +2,32 @@ defmodule Gardenhose.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :gardenhose,
-      version: "0.0.1",
-      elixir: "~> 1.0.0",
-      elixirc_paths: ["lib", "web"],
-      deps: deps ]
+    [app: :gardenhose,
+     version: "0.0.1",
+     elixir: "~> 1.0.0",
+     deps: deps]
   end
 
   # Configuration for the OTP application
+  #
+  # Type `mix help compile.app` for more information
   def application do
-    [
-      mod: { Gardenhose, [] },
-      applications: [:phoenix, :cowboy, :logger, :postgrex, :ecto]
-    ]
+    [applications: [:logger, :lazymaru, :postgrex, :ecto],
+     mod: {Gardenhose, []}]
   end
 
-  # Returns the list of dependencies in the format:
-  # { :foobar, git: "https://github.com/elixir-lang/foobar.git", tag: "0.1" }
+  # Dependencies can be Hex packages:
   #
-  # To specify particular versions, regardless of the tag, do:
-  # { :barbat, "~> 0.1", github: "elixir-lang/barbat" }
+  #   {:mydep, "~> 0.3.0"}
+  #
+  # Or git/path repositories:
+  #
+  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
+  #
+  # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:phoenix, "0.4.1"},
-      {:cowboy, "~> 1.0.0"},
+      {:lazymaru, github: "falood/lazymaru"},
       {:postgrex, "~> 0.6.0"},
       {:ecto, "~> 0.2.5"}
     ]
