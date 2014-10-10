@@ -13,8 +13,9 @@ defmodule Gardenhose do
       # Define workers and child supervisors to be supervised
       worker(Gardenhose.Repo, []),
       worker(Gardenhose.Job.Stream, []),
-      supervisor(Gardenhose.Job.Supervisor, []),
-      worker(Gardenhose.Job.Master.Controller, [])
+      worker(Gardenhose.Bucket, [[name: :group_reg]]),
+      supervisor(Gardenhose.Group.Supervisor, []),
+      supervisor(Gardenhose.Job.Supervisor, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
