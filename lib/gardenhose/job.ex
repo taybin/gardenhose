@@ -15,15 +15,15 @@ defmodule Gardenhose.Job do
   end
 
   def init(args) do
-    Logger.info("init'd")
     {:ok, args}
   end
 
   def handle_cast({:start, caller}, state) do
-    Logger.info("started")
+    Logger.info("Job started")
     Gardenhose.Job.Stream.notify_start(:a)
     state.()
     Gardenhose.Job.Stream.notify_stop(:b)
+    Logger.info("Job ended")
     {:stop, :normal, state}
   end
 end

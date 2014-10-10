@@ -8,12 +8,11 @@ defmodule Gardenhose.Job.Master do
       {:ok, args}
     end
 
-    def handle_event({:start, _}, state) do
+    def handle_event(_, state) do
       {:ok, state}
     end
 
     def handle_event({:stop, args}, state) do
-      Logger.info("handle_event stop")
       Gardenhose.Job.Master.Controller.job_stopped(args)
       {:ok, state}
     end
@@ -36,11 +35,11 @@ defmodule Gardenhose.Job.Master do
     end
 
     def init do
+      Logger.info("started Controller")
       {:ok, []}
     end
 
     def handle_cast({:start_job, args}, state) do
-      Logger.info("started Controller")
       GenEvent.add_handler(:job_stream, Gardenhose.Job.Master.Listener, [:hi])
       {:ok, pid} = Gardenhose.Job.create_job(args)
       Gardenhose.Job.start(pid, :parent)
@@ -48,7 +47,6 @@ defmodule Gardenhose.Job.Master do
     end
 
     def handle_cast({:stopped, args}, state) do
-      Logger.info("job stopped here")
       {:noreply, state}
     end
   end
