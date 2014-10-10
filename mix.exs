@@ -27,6 +27,8 @@ defmodule Gardenhose.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
+      {:earmark, "~> 0.1", only: :dev},
+      {:ex_doc, "~> 0.6", only: :dev},
       {:lazymaru, github: "falood/lazymaru"},
       {:postgrex, "~> 0.6.0"},
       {:ecto, "~> 0.2.5"}
