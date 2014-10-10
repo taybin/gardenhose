@@ -4,7 +4,7 @@ defmodule Gardenhose.Mixfile do
   def project do
     [app: :gardenhose,
      version: "0.0.1",
-     elixir: "~> 1.0.0",
+     elixir: "~> 1.0.1",
      deps: deps]
   end
 
