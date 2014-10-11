@@ -16,13 +16,13 @@ defmodule Gardenhose.Group do
   def init([id, first_job]) do
     Logger.info("started Controller #{id}")
     Gardenhose.Bucket.put(:group_reg, id, self())
-    GenEvent.add_handler(:job_stream, Gardenhose.Group.Listener, [id])
-    {:ok, %{id: id, first_job: first_job}}
+    :ok = GenEvent.add_handler(:job_stream, Gardenhose.Group.Listener, [id])
+    {:ok, %{id: id}}
   end
 
   def terminate(reason, state) do
     GenEvent.remove_handler(:job_stream, Gardenhose.Group.Listener, [])
-    Gardenhose.Bucket.delete(:group_reg, state.id, self())
+    Gardenhose.Bucket.delete(:group_reg, state.id)
     :ok
   end
 
@@ -51,8 +51,6 @@ defmodule Gardenhose.Group do
       {:ok, group_id}
     end
 
-    def handle_event(_, state) do
-      {:ok, state}
-    end
+    def handle_event(_, state), do: {:ok, state}
   end
 end
