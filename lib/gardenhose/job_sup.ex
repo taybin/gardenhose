@@ -1,8 +1,8 @@
 defmodule Gardenhose.Job.Supervisor do
   use Supervisor
 
-  def create_job(args) do
-    Supervisor.start_child(:job_sup, [args])
+  def create_job(id, group_id, fun, opts) do
+    Supervisor.start_child(:job_sup, [id, group_id, fun, opts])
   end
 
   def start_link do

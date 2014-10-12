@@ -37,18 +37,25 @@ defmodule Gardenhose.Group do
     {:noreply, state}
   end
 
+  # private
+  defp lookup_job(job_id) do
+
+  end
+
   defmodule Listener do
     use GenEvent
     require Logger
 
     def init(group_id) do
       Logger.info("started listener")
-      {:ok, group_id}
+      {:ok, %{group_id: group_id}}
     end
 
-    def handle_event({:stop, job_id}, group_id) do
-      Gardenhose.Group.job_stopped(group_id, job_id)
-      {:ok, group_id}
+    def handle_event({:stop, group_id, job_id}, state) do
+      if state.group_id == group_id do
+        Gardenhose.Group.job_stopped(group_id, job_id)
+      end
+      {:ok, state}
     end
 
     def handle_event(_, state), do: {:ok, state}

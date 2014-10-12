@@ -1,7 +1,6 @@
 defmodule Gardenhose.GroupTest do
   use ExUnit.Case, async: true
 
-
   test "Group should properly init and register in bucket" do
     group_id = 1
     {:ok, state} = Gardenhose.Group.init([group_id, 2])
