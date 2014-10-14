@@ -28,4 +28,13 @@ defmodule Gardenhose.Bucket do
   def delete(bucket, key) do
     Agent.get_and_update(bucket, &HashDict.pop(&1, key))
   end
+
+  @doc """
+  Clear all keys from `bucket`.
+
+  Returns nil
+  """
+  def clear(bucket) do
+    Agent.update(bucket, fn (_) -> HashDict.new end)
+  end
 end
