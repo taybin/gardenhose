@@ -3,38 +3,74 @@ defmodule Gardenhose.Job do
   require Logger
 
   defmodule State do
-    defstruct id: nil, group_id: nil, fun: nil, parents: [], wait_for_parents: false
+    defstruct run_id: nil,
+              job_id: nil,
+              group_id: nil,
+              job_fun: nil,
+              parents: nil,
+              wait_for_parents: nil,
+              finished_parents: HashSet.new,
+              fun_data: nil
+
     @type t :: %State{
-      id: integer,
+      run_id: integer,
+      job_id: integer,
       group_id: integer,
-      fun: (() -> :ok | {:error, any}),
-      parents: [integer],
-      wait_for_parents: boolean
+      job_fun: ((Poison.Parser.t) -> :ok | {:error, any}),
+      parents: HashSet.t | nil,
+      wait_for_parents: boolean,
+      finished_parents: HashSet.t,
+      fun_data: Poison.Parser.t
     }
   end
 
-  def create_job(id, group_id, fun, opts \\ []) do
-    Gardenhose.Job.Supervisor.create_job(id, group_id, fun, opts)
+  @type options :: [
+    {:wait_for_parents, [integer]},
+    {:data, Poison.Parser.t}
+  ]
+
+  @type result :: :ok | {:error, any}
+
+  @type job_fun :: ((Poison.Parser.t) -> result)
+
+  @spec create_job(integer, integer, integer, job_fun, options) :: Supervisor.on_start
+  def create_job(run_id, job_id, group_id, job_fun, opts \\ []) do
+    Gardenhose.Job.Supervisor.create_job(run_id, job_id, group_id, job_fun, opts)
   end
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
   end
 
-  def start(pid, caller) do
-    GenServer.cast(pid, {:start, caller})
+  def start(pid, parent_id) do
+    GenServer.cast(pid, {:start, parent_id})
   end
 
-  def init([id, group_id, fun, opts]) do
-    {:ok, %State{id: id, group_id: group_id, fun: fun, wait_for_parents: opts[:wait_for_parents], parents: opts[:parents]}}
+  def init([run_id, job_id, group_id, job_fun, opts]) do
+    {:ok, %State{
+        run_id: run_id,
+        job_id: job_id,
+        group_id: group_id,
+        job_fun: job_fun,
+        wait_for_parents: Keyword.has_key?(opts, :wait_for_parents),
+        parents: Keyword.get(opts, :wait_for_parents),
+        fun_data: Keyword.get(opts, :data)
+      }
+    }
   end
 
-  def handle_cast({:start, caller}, state) do
-    Logger.info("Job started")
-    Gardenhose.Job.Stream.notify_start(state.group_id, state.id)
-    state.fun.()
-    Gardenhose.Job.Stream.notify_stop(state.group_id, state.id)
-    Logger.info("Job ended")
+  def handle_cast({:start, _parent_id}, state) do
+    run(state)
     {:stop, :normal, state}
+  end
+
+  @spec run(State.t) :: result
+  defp run(state) do
+    Logger.info("Job started")
+    Gardenhose.Job.Stream.notify_start(state.group_id, state.run_id)
+    result = state.job_fun.(state.fun_data)
+    Gardenhose.Job.Stream.notify_stop(state.group_id, state.run_id, result)
+    Logger.info("Job ended")
+    result
   end
 end
