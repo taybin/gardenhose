@@ -26,12 +26,6 @@ defmodule Gardenhose.Group do
     :ok
   end
 
-  def handle_cast({:start_job, args}, state) do
-    {:ok, pid} = Gardenhose.Job.create_job(args)
-    Gardenhose.Job.start(pid, :parent)
-    {:noreply, state}
-  end
-
   def handle_cast({:stopped, job_id}, state) do
     Logger.debug("job stopped, #{job_id}")
     {:noreply, state}
