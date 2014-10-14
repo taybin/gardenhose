@@ -38,8 +38,8 @@ defmodule Gardenhose.Job do
     Gardenhose.Job.Supervisor.create_job(run_id, job_id, group_id, job_fun, opts)
   end
 
-  def start_link(args) do
-    GenServer.start_link(__MODULE__, args)
+  def start_link(run_id, job_id, group_id, job_fun, opts) do
+    GenServer.start_link(__MODULE__, [run_id, job_id, group_id, job_fun, opts])
   end
 
   def start(pid, parent_id) do
