@@ -59,6 +59,17 @@ defmodule Gardenhose.Job do
     }
   end
 
+  def handle_cast({:start, parent_id}, %State{wait_for_parents: true} = state) do
+    new_parents = HashSet.put(state.finished_parents, parent_id)
+    state = %{state | finished_parents: new_parents}
+    if HashSet.equal?(state.finished_parents, state.parents) do
+      run(state)
+      {:stop, :normal, state}
+    else
+      {:noreply, state}
+    end
+  end
+
   def handle_cast({:start, _parent_id}, state) do
     run(state)
     {:stop, :normal, state}

@@ -23,7 +23,9 @@ defmodule Gardenhose.BucketTest do
 
   test "clear values", %{bucket: bucket} do
     Gardenhose.Bucket.put(bucket, "milk", 3)
+    assert Gardenhose.Bucket.get(bucket, "milk") == 3
     Gardenhose.Bucket.put(bucket, "cheese", 4)
+    assert Gardenhose.Bucket.get(bucket, "cheese") == 4
     Gardenhose.Bucket.clear(bucket)
     assert Gardenhose.Bucket.get(bucket, "milk") == nil
     assert Gardenhose.Bucket.get(bucket, "cheese") == nil
