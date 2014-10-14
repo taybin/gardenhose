@@ -47,13 +47,16 @@ defmodule Gardenhose.Job do
   end
 
   def init([run_id, job_id, group_id, job_fun, opts]) do
+    wait_for_parents = Keyword.has_key?(opts, :wait_for_parents)
+    parents = !wait_for_parents || Enum.into(Keyword.get(opts, :wait_for_parents), HashSet.new)
+
     {:ok, %State{
         run_id: run_id,
         job_id: job_id,
         group_id: group_id,
         job_fun: job_fun,
-        wait_for_parents: Keyword.has_key?(opts, :wait_for_parents),
-        parents: Keyword.get(opts, :wait_for_parents),
+        wait_for_parents: wait_for_parents,
+        parents: parents,
         fun_data: Keyword.get(opts, :data)
       }
     }
