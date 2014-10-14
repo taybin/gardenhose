@@ -5,8 +5,9 @@ defmodule Gardenhose.Group.Supervisor do
     Supervisor.start_child(:group_sup, [id, first_job])
   end
 
+  @spec start_link() :: Supervisor.on_start
   def start_link do
-    Supervisor.start_link(__MODULE__, [])
+    Supervisor.start_link(__MODULE__, [], [])
   end
 
   def init([]) do
