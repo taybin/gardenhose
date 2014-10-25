@@ -30,7 +30,7 @@ defmodule Gardenhose.Mixfile do
       {:dialyze, "~> 0.1.3"},
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc, "~> 0.6", only: :dev},
-      {:lazymaru, github: "falood/lazymaru"},
+      {:lazymaru, "~> 0.2.4"},
       {:postgrex, "~> 0.6.0"},
       {:ecto, "~> 0.2.5"},
       {:poison, "~> 1.2.0"}

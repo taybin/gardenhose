@@ -5,7 +5,7 @@
   "earmark": {:hex, :earmark, "0.1.10"},
   "ecto": {:hex, :ecto, "0.2.5"},
   "ex_doc": {:hex, :ex_doc, "0.6.0"},
-  "lazymaru": {:git, "git://github.com/falood/lazymaru.git", "5499b8ff2060a57a45b58107449b2a86e18c3879", []},
+  "lazymaru": {:hex, :lazymaru, "0.2.4"},
   "plug": {:hex, :plug, "0.8.1"},
   "poison": {:hex, :poison, "1.2.0"},
   "poolboy": {:hex, :poolboy, "1.2.1"},
